@@ -49,7 +49,10 @@ class TodoController {
         }
         Todo.update(task, { where: { id: req.params.id }, returning: true })
             .then(response => {
-                return res.status(200).json(respon)
+                return res.status(200).json(response)
+            })
+            .catch(err => {
+                return res.status
             })
     }
 }

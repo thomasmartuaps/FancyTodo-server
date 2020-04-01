@@ -1,7 +1,7 @@
 const { Todo } = require('../models')
 
 class TodoController {
-    static create(req, res) {
+    static create(req, res, next) {
         let newTask = {
             title: req.body.title,
             description: req.body.description,
@@ -14,33 +14,33 @@ class TodoController {
                 return res.status(201).json(response)
             })
             .catch(err => {
-                return res.status(500).json(err)
+                return next(err)
             })
     }
-    static read(req, res) {
+    static read(req, res, next) {
         Todo.findAll({ where: { UserId: req.decoded.id || 1 }})
             .then(response => {
                 return res.status(200).json(response)
             })
             .catch(err => {
-                return res.status(500).json(err)
+                return next(err)
             })
     }
-    static readById(req, res) {
+    static readById(req, res, next) {
         Todo.findOne({ where: { id: req.params.id }})
             .then(response => {
                 if(!response) {
-                    return res.status(404).json({ type: '404 Not found', msg: 'Item not found!'})
+                    throw { status: 404, type: '404 Not found', msg: 'Item not found!' }
                 }
                 else {
                     return res.status(200).json(response)
                 }
             })
             .catch(err => {
-                return res.status(500).json(err)
+                return next(err)
             })
     }
-    static update(req, res) {
+    static update(req, res, next) {
         let task = {
             title: req.body.title,
             description: req.body.description,
@@ -52,7 +52,16 @@ class TodoController {
                 return res.status(200).json(response)
             })
             .catch(err => {
-                return res.status
+                return next(err)
+            })
+    }
+    static delete(req, res, next) {
+        Todo.delete({ where: { id: req.params.id }, returning: true })
+            .then(response => {
+                return res.status(200).json(response)
+            })
+            .catch(err => {
+                return next(err)
             })
     }
 }

@@ -3,7 +3,7 @@ const { createToken } = require('../helpers/jwt')
 const { checkPassword } = require('../helpers/bcrypt')
 
 class UserController {
-    static register(req, res) {
+    static register(req, res, next) {
         let { email, password } = req.body
         User.create({ email, password })
             .then(response => {
@@ -15,19 +15,19 @@ class UserController {
                 return res.status(201).json({id: payload.id, email: payload.email, token: token})
             })
             .catch(err => {
-                return res.status(500).json(err)
+                return next(err)
             })
     }
-    static login(req, res) {
+    static login(req, res, next) {
         let { email, password } = req.body
         User.findOne({ where: { email: email }})
             .then(response => {
                 const decrypted = checkPassword(password, response.password)
                 if(!response) {
-                    return res.status(400).json({ type: 'Bad Request', msg: 'Wrong email or password'})
+                    throw { status: 400, type: 'Bad Request', msg: 'Wrong email or password'}
                 }
                 else if(!decrypted) {
-                    return res.status(400).json({ type: 'Bad Request', msg: 'Wrong email or password' })
+                    throw { status: 400, type: 'Bad Request', msg: 'Wrong email or password' }
                 }
                 else {
                     let payload = {
@@ -39,7 +39,7 @@ class UserController {
                 }
             })
             .catch(err => {
-                return res.status(500).json(err)
+                return next(err)
             })
     }
 }

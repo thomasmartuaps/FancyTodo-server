@@ -7,7 +7,7 @@ class TodoController {
             description: req.body.description,
             status: false,
             due_date: req.body.due_date,
-            UserId: req.decoded.id || 1
+            UserId: req.user.id
         }
         Todo.create(newTask)
             .then(response => {
@@ -18,7 +18,7 @@ class TodoController {
             })
     }
     static read(req, res, next) {
-        Todo.findAll({ where: { UserId: req.decoded.id || 1 }})
+        Todo.findAll({ where: { UserId: req.user.id}})
             .then(response => {
                 return res.status(200).json(response)
             })
@@ -49,7 +49,7 @@ class TodoController {
         }
         Todo.update(task, { where: { id: req.params.id }, returning: true })
             .then(response => {
-                return res.status(200).json(response)
+                return res.status(200).json(response[1][0])
             })
             .catch(err => {
                 return next(err)

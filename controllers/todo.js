@@ -56,9 +56,9 @@ class TodoController {
             })
     }
     static delete(req, res, next) {
-        Todo.delete({ where: { id: req.params.id }, returning: true })
+        Todo.destroy({ where: { id: req.params.id }, returning: true })
             .then(response => {
-                return res.status(200).json(response)
+                return res.status(200).json({ status: response, message: `Item id ${req.params.id} has been deleted` })
             })
             .catch(err => {
                 return next(err)

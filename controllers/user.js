@@ -35,7 +35,12 @@ class UserController {
                         email: response.email
                     }
                     let token = createToken(payload)
-                    return res.status(200).json({ id: payload.id, email: payload.email, token: token })
+                    return res.status(200).json({ 
+                        id: payload.id, 
+                        email: payload.email, 
+                        token: token, 
+                        avatar: `https://api.adorable.io/avatars/200/${response.email}.png` 
+                    })
                 }
             })
             .catch(err => {

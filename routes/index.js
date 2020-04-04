@@ -6,6 +6,7 @@ const authorization = require('../middlewares/authorization')
 
 router.post('/register', UserController.register)
 router.post('/login', UserController.login)
+router.post('/googleSignIn', UserController.googleSignIn)
 
 router.use(authentication)
 router.post('/todos', TodoController.create)

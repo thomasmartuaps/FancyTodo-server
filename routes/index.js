@@ -14,5 +14,6 @@ router.get('/todos', TodoController.read)
 router.get('/todos/:id', authorization, TodoController.readById)
 router.put('/todos/:id', authorization, TodoController.update)
 router.delete('/todos/:id', authorization, TodoController.delete)
+router.get('/jokes', TodoController.readJoke)
 
 module.exports = router

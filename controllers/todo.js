@@ -1,4 +1,5 @@
 const { Todo } = require('../models')
+const axios = require('axios')
 
 class TodoController {
     static create(req, res, next) {
@@ -18,7 +19,7 @@ class TodoController {
             })
     }
     static read(req, res, next) {
-        Todo.findAll({ where: { UserId: req.user.id}})
+        Todo.findAll({ where: { UserId: req.user.id}, order: [['createdAt', 'DESC']]})
             .then(response => {
                 return res.status(200).json(response)
             })
@@ -59,6 +60,15 @@ class TodoController {
         Todo.destroy({ where: { id: req.params.id }, returning: true })
             .then(response => {
                 return res.status(200).json({ status: response, message: `Item id ${req.params.id} has been deleted` })
+            })
+            .catch(err => {
+                return next(err)
+            })
+    }
+    static readJoke(req, res, next) {
+        axios.get('https://official-joke-api.appspot.com/random_joke')
+            .then(response => {
+                return res.status(200).json({ setup: response.data.setup, punchline: response.data.punchline })
             })
             .catch(err => {
                 return next(err)

@@ -2,6 +2,8 @@
 
 A task management web application aimed at providing a simple and intuitive way of tracking and helping you to achieve your goals. It's not gonna win an award in innovation but it's free so pls try it.
 
+## TODO ROUTES
+
 ## Create Task
 
 Store new Task item to the database. Returns json data about that Task item.
@@ -149,4 +151,63 @@ None
 {
 	"id": [integer],
 	"msg": "delete successful"
+}
+
+## USER ROUTES
+
+## Register
+
+Create a new user. Will also return a link for the adorable avatar API.
+
+**URL:**
+/register
+
+**Method:**
+POST
+
+**Request** **Header:**
+{
+"token": [string]
+}
+
+**Request** **Body:**
+{
+	"email": [string],
+	"password": [string],
+}
+
+**Response**:
+{
+	"id": [integer],
+	"email": [string],
+	"token": [string],
+	"avatar": [string]
+}
+
+## Login
+
+Log in an existing user. Will also return a link for the adorable avatar API.
+
+**URL:**
+/login
+
+**Method:**
+POST
+
+**Request** **Header:**
+{
+"token": [string]
+}
+
+**Request** **Body:**
+{
+	"email": [string],
+	"password": [string],
+}
+
+**Response**:
+{
+	"email": [string],
+	"token": [string],
+	"avatar": [string]
 }
